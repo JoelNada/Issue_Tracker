@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Order(2)
 @Component
@@ -34,6 +35,8 @@ public class AdminInitializer implements CommandLineRunner {
                    newUser.setEmail("admin@support.com");
                    newUser.setPassword(passwordEncoder.encode("admin@123"));
                    newUser.setRoles(Set.of(role));
+                   newUser.setUserId("USR-" + UUID.randomUUID().toString().substring(0,8));
+                   newUser.setDateOfBirth("2000-10-20");
                    userRepo.save(newUser);
         }
     }

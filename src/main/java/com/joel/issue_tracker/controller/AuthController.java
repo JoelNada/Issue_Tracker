@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth/")
 public class AuthController {
@@ -22,8 +25,10 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody AuthLoginRequestDTO authLoginRequestDTO) {
-        return ResponseEntity.ok().body(authService.login(authLoginRequestDTO));
+    public ResponseEntity<?> login(@RequestBody AuthLoginRequestDTO authLoginRequestDTO) {
+        Map<String, String> token = new HashMap<>();
+        token.put("token", authService.login(authLoginRequestDTO));
+        return ResponseEntity.ok().body(token);
     }
 
 

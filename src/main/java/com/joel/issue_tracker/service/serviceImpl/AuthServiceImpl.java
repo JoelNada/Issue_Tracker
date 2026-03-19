@@ -19,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 public class AuthServiceImpl implements AuthService {
 
@@ -44,6 +46,7 @@ public class AuthServiceImpl implements AuthService {
         }
         else{
             User newUser = convertDTOtoEntity(userDTO);
+            newUser.setUserId("USR-" + UUID.randomUUID().toString().substring(0,8));
             newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
             Role role = roleRepo.findByRoleName("ROLE_USER").orElseThrow();
             newUser.getRoles().add(role);
@@ -61,7 +64,7 @@ public class AuthServiceImpl implements AuthService {
                 );
         if(authentication.isAuthenticated()){
             UserDetails userDetails = userDetailsService.loadUserByUsername(userDTO.getUsername());
-            System.out.println("The credentials were right!");
+            //System.out.println("The credentials were right!");
             return jwtService.generateToken(userDetails);
 
         }
