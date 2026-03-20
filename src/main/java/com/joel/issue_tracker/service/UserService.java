@@ -16,4 +16,5 @@ public interface UserService {
     public UserProfileDTO getUserProfile(String name) throws UserException;
     public UsersDTO  getUserByUserID(String userId) throws UserException;
 
+
 }
