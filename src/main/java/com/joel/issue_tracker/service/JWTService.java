@@ -17,17 +17,16 @@ import java.util.function.Function;
 @Service
 public class JWTService {
 
-    private String secretKey="";
-    public JWTService(){
-        try{
-            KeyGenerator key = KeyGenerator.getInstance("HmacSHA256");
-            SecretKey sk = key.generateKey();
-            secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
-        }
-        catch(NoSuchAlgorithmException e){
-            throw new RuntimeException(e);
-        }
-    }
+    //    public JWTService(){
+//        try{
+//            KeyGenerator key = KeyGenerator.getInstance("HmacSHA256");
+//            SecretKey sk = key.generateKey();
+//            secretKey = Base64.getEncoder().encodeToString(sk.getEncoded());
+//        }
+//        catch(NoSuchAlgorithmException e){
+//            throw new RuntimeException(e);
+//        }
+//    }
 
     public String generateToken(UserDetails userDetails){
         Map<String,Object> claims = new HashMap<>();
@@ -46,6 +45,7 @@ public class JWTService {
     }
 
     private Key getKey() {
+        String secretKey = "2dae84f846e4f4b158a8d26681707f4338495bc7ab68151d7f7679cc5e56202dd3da0d356da007a7c28cb0b780418f4f3246769972d6feaa8f610c7d1e7ecf6a";
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
