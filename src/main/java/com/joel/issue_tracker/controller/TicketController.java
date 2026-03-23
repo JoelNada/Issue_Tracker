@@ -18,7 +18,8 @@ public class TicketController {
     private TicketService ticketService;
 
     @PostMapping("/create-ticket")
-    public ResponseEntity<?> createTicket(@RequestBody @Valid TicketDTO ticketDTO, @AuthenticationPrincipal UserDetails userDetails) {
+    public ResponseEntity<?> createTicket(@RequestBody @Valid TicketDTO ticketDTO,
+                                          @AuthenticationPrincipal UserDetails userDetails) {
      return ResponseEntity.ok().body(ticketService.createTicket(ticketDTO, userDetails.getUsername()));
     }
 

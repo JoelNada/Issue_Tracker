@@ -41,11 +41,11 @@ public class JWTFilter extends OncePerRequestFilter {
     {
         String header = request.getHeader("Authorization");
         String token = null;
-        String username = null;
+        String email = null;
         try {
             if (header != null && header.startsWith("Bearer ")) {
                 token = header.substring(7);
-                username = jwtService.getUsername(token);
+                email = jwtService.getEmail(token);
             }
         }
         catch (SignatureException e) {
@@ -61,8 +61,8 @@ public class JWTFilter extends OncePerRequestFilter {
             throw new UnAuthorizedException("JWT claims string is empty or invalid.");
         }
 
-        if(username!=null && SecurityContextHolder.getContext().getAuthentication()==null){
-            UserDetails userDetails = applicationContext.getBean(MyUserDetailsService.class).loadUserByUsername(username);
+        if(email!=null && SecurityContextHolder.getContext().getAuthentication()==null){
+            UserDetails userDetails = applicationContext.getBean(MyUserDetailsService.class).loadUserByUsername(email);
             Set<String> roles = jwtService.extractRoles(token);
             // Convert Set<String> roles to Set<GrantedAuthority>
             Set<GrantedAuthority> authorities = roles.stream()

@@ -66,7 +66,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileDTO getUserProfile(String name) throws UserException {
-        User currentUser = userRepo.findByUsername(name);
+        System.out.println(name);
+        User currentUser = userRepo.findByEmail(name);
         UserProfileDTO userProfileDTO = modelMapper.map(currentUser, UserProfileDTO.class);
         userProfileDTO.setNoOfTickets(currentUser.getCreatedTickets().size());
         userProfileDTO.setRole(currentUser.getRoles().iterator().next().getRoleName());

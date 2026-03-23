@@ -31,7 +31,7 @@ public class UserController {
     }
 
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN, ROLE_SUPPORT')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SUPPORT')")
     @GetMapping("/get-user-by-id")
     public ResponseEntity<?> getUserById(@RequestParam("userId") String userId) throws UserException {
      return ResponseEntity.ok().body(userService.getUserByUserID(userId));
@@ -40,7 +40,8 @@ public class UserController {
     @GetMapping("/get-current-user-profile")
     public ResponseEntity<?> getCurrentUserProfile(@AuthenticationPrincipal UserDetails userDetails) throws UserException {
         return ResponseEntity.ok().body(userService.getUserProfile(userDetails.getUsername()));
-
     }
+
+
 
 }

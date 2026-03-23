@@ -59,11 +59,11 @@ public class AuthServiceImpl implements AuthService {
     public String login(AuthLoginRequestDTO userDTO) {
         Authentication authentication = manager
                 .authenticate(new UsernamePasswordAuthenticationToken(
-                        userDTO.getUsername(),
+                        userDTO.getEmail(),
                         userDTO.getPassword())
                 );
         if(authentication.isAuthenticated()){
-            UserDetails userDetails = userDetailsService.loadUserByUsername(userDTO.getUsername());
+            UserDetails userDetails = userDetailsService.loadUserByUsername(userDTO.getEmail());
             //System.out.println("The credentials were right!");
             return jwtService.generateToken(userDetails);
 
