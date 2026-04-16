@@ -3,6 +3,7 @@ package com.joel.issue_tracker.service.serviceImpl;
 import com.joel.issue_tracker.exceptions.customExceptions.UserException;
 import com.joel.issue_tracker.models.Role;
 import com.joel.issue_tracker.models.User;
+import com.joel.issue_tracker.models.UserPrincipal;
 import com.joel.issue_tracker.models.dto.RegisterUserDTO;
 import com.joel.issue_tracker.models.dto.UserProfileDTO;
 import com.joel.issue_tracker.models.dto.UsersDTO;
@@ -11,6 +12,8 @@ import com.joel.issue_tracker.repo.UserRepo;
 import com.joel.issue_tracker.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -66,7 +69,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserProfileDTO getUserProfile(String name) throws UserException {
-        System.out.println(name);
+        //System.out.println(name);
+        Authentication auth =  SecurityContextHolder.getContext().getAuthentication();
+        assert auth != null;
+        Object principal = auth.getPrincipal();
+        UserPrincipal userPrincipal = (UserPrincipal) principal;
+        assert userPrincipal != null;
+        System.out.println(userPrincipal.getUsername());
         User currentUser = userRepo.findByEmail(name);
         UserProfileDTO userProfileDTO = modelMapper.map(currentUser, UserProfileDTO.class);
         userProfileDTO.setNoOfTickets(currentUser.getCreatedTickets().size());
