@@ -5,6 +5,6 @@ import com.joel.issue_tracker.models.dto.*;
 import java.util.List;
 
 public interface TicketService {
-    public String createTicket(TicketDTO ticketDTO, String username);
+    public String createTicket(TicketDTO ticketDTO);
     public List<TicketViewDTO> viewAllTickets();
 }

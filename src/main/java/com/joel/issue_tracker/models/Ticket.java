@@ -1,17 +1,21 @@
 package com.joel.issue_tracker.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.joel.issue_tracker.helper.TicketPriority;
 import com.joel.issue_tracker.helper.TicketStatus;
 import jakarta.persistence.*;
 import jakarta.persistence.CascadeType;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.*;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Entity
 @Table(name = "tickets")
-@Data
+@Getter
+@Setter
 public class Ticket {
 
     @Id
@@ -33,6 +37,7 @@ public class Ticket {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_by")
+    @JsonBackReference
     private User createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)

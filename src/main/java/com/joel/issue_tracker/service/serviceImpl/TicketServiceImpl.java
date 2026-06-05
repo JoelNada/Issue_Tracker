@@ -7,6 +7,7 @@ import com.joel.issue_tracker.repo.*;
 import com.joel.issue_tracker.service.TicketService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,15 @@ public class TicketServiceImpl implements TicketService {
     private UserRepo userRepo;
 
     @Override
-    public String createTicket(TicketDTO ticketDTO, String username) {
+    public String createTicket(TicketDTO ticketDTO) {
 
-        User user = userRepo.findByUsername(username);
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        assert auth != null;
+        Object principal = auth.getPrincipal();
+        UserPrincipal userPrincipal = (UserPrincipal) principal;
+        assert userPrincipal != null;
+        User user = userRepo.findByEmail(userPrincipal.getUsername());
+        System.out.println("Test from TicketServiceImpl : "+userPrincipal.getUsername()+"  "+user);
         Ticket ticket = modelMapper.map(ticketDTO, Ticket.class);
         ticket.setCreatedBy(user);
         ticket.setStatus(TicketStatus.NEW);

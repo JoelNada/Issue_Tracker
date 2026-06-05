@@ -75,8 +75,8 @@ public class UserServiceImpl implements UserService {
         Object principal = auth.getPrincipal();
         UserPrincipal userPrincipal = (UserPrincipal) principal;
         assert userPrincipal != null;
-        System.out.println(userPrincipal.getUsername());
-        User currentUser = userRepo.findByEmail(name);
+        System.out.println("Test from userserviceimpl : "+userPrincipal.getUsername());
+        User currentUser = userRepo.findByEmail(userPrincipal.getUsername());
         UserProfileDTO userProfileDTO = modelMapper.map(currentUser, UserProfileDTO.class);
         userProfileDTO.setNoOfTickets(currentUser.getCreatedTickets().size());
         userProfileDTO.setRole(currentUser.getRoles().iterator().next().getRoleName());

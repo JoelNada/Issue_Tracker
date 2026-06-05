@@ -11,16 +11,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/vi/ticket")
+@RequestMapping("/api/v1/ticket")
 public class TicketController {
 
     @Autowired
     private TicketService ticketService;
 
     @PostMapping("/create-ticket")
-    public ResponseEntity<?> createTicket(@RequestBody @Valid TicketDTO ticketDTO,
-                                          @AuthenticationPrincipal UserDetails userDetails) {
-     return ResponseEntity.ok().body(ticketService.createTicket(ticketDTO, userDetails.getUsername()));
+    public ResponseEntity<?> createTicket(@RequestBody @Valid TicketDTO ticketDTO) {
+     return ResponseEntity.ok().body(ticketService.createTicket(ticketDTO));
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")

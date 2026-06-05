@@ -1,6 +1,7 @@
 package com.joel.issue_tracker.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -38,6 +39,8 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     @OneToMany
-    private List<Ticket> createdTickets;
+    (mappedBy = "createdBy")
+    @JsonManagedReference
+    private List<Ticket> createdTickets = new ArrayList<>();
 
 }
