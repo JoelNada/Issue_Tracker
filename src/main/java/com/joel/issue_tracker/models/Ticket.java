@@ -1,6 +1,7 @@
 package com.joel.issue_tracker.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.joel.issue_tracker.helper.TicketPriority;
 import com.joel.issue_tracker.helper.TicketStatus;
 import jakarta.persistence.*;
@@ -47,6 +48,7 @@ public class Ticket {
     @OneToMany(mappedBy = "ticket",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<TicketComment> ticketComments;
+    @JsonManagedReference
+    private List<TicketComment> ticketComments = new ArrayList<>();
 
 }

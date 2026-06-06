@@ -1,10 +1,10 @@
 package com.joel.issue_tracker.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.*;
 import java.time.LocalDateTime;
-import java.util.*;
 
 @Entity
 @Data
@@ -20,6 +20,7 @@ public class TicketComment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "ticket_id")
+    @JsonBackReference
     private Ticket ticket;
 
     @ManyToOne(fetch = FetchType.LAZY)

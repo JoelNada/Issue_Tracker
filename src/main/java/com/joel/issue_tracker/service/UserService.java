@@ -13,7 +13,7 @@ public interface UserService {
 
     public String registerSupportAgent(RegisterUserDTO userDTO) throws UserException;
     public List<UsersDTO> getUsers();
-    public UserProfileDTO getUserProfile(String name) throws UserException;
+    public UserProfileDTO getUserProfile() throws UserException;
     public UsersDTO  getUserByUserID(String userId) throws UserException;
 
 

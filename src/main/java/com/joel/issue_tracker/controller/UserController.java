@@ -38,8 +38,8 @@ public class UserController {
     }
 
     @GetMapping("/get-current-user-profile")
-    public ResponseEntity<?> getCurrentUserProfile(@AuthenticationPrincipal UserDetails userDetails) throws UserException {
-        return ResponseEntity.ok().body(userService.getUserProfile(userDetails.getUsername()));
+    public ResponseEntity<?> getCurrentUserProfile() throws UserException {
+        return ResponseEntity.ok().body(userService.getUserProfile());
     }
 
 

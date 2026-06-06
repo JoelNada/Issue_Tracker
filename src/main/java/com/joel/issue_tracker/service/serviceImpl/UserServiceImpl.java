@@ -1,14 +1,9 @@
 package com.joel.issue_tracker.service.serviceImpl;
 
 import com.joel.issue_tracker.exceptions.customExceptions.UserException;
-import com.joel.issue_tracker.models.Role;
-import com.joel.issue_tracker.models.User;
-import com.joel.issue_tracker.models.UserPrincipal;
-import com.joel.issue_tracker.models.dto.RegisterUserDTO;
-import com.joel.issue_tracker.models.dto.UserProfileDTO;
-import com.joel.issue_tracker.models.dto.UsersDTO;
-import com.joel.issue_tracker.repo.RoleRepo;
-import com.joel.issue_tracker.repo.UserRepo;
+import com.joel.issue_tracker.models.*;
+import com.joel.issue_tracker.models.dto.*;
+import com.joel.issue_tracker.repo.*;
 import com.joel.issue_tracker.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -68,14 +61,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserProfileDTO getUserProfile(String name) throws UserException {
+    public UserProfileDTO getUserProfile( ) throws UserException {
         //System.out.println(name);
         Authentication auth =  SecurityContextHolder.getContext().getAuthentication();
         assert auth != null;
         Object principal = auth.getPrincipal();
         UserPrincipal userPrincipal = (UserPrincipal) principal;
         assert userPrincipal != null;
-        System.out.println("Test from userserviceimpl : "+userPrincipal.getUsername());
+        System.out.println("Test from UserServiceImpl : "+userPrincipal.getUsername());
         User currentUser = userRepo.findByEmail(userPrincipal.getUsername());
         UserProfileDTO userProfileDTO = modelMapper.map(currentUser, UserProfileDTO.class);
         userProfileDTO.setNoOfTickets(currentUser.getCreatedTickets().size());

@@ -38,8 +38,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @OneToMany
-    (mappedBy = "createdBy")
+    @OneToMany(mappedBy = "createdBy")
     @JsonManagedReference
     private List<Ticket> createdTickets = new ArrayList<>();
 
