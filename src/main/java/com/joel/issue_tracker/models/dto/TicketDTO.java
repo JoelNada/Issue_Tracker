@@ -2,9 +2,10 @@ package com.joel.issue_tracker.models.dto;
 
 import com.joel.issue_tracker.helper.TicketPriority;
 import jakarta.validation.constraints.*;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 public class TicketDTO {
 
     @NotBlank(message = "Title is required")
@@ -15,5 +16,7 @@ public class TicketDTO {
     private String description;
     @NotNull(message = "Priority is required")
     private TicketPriority priority;
+    @NotNull(message = "Component is required")
+    private String componentId;
 
 }

@@ -1,6 +1,6 @@
 package com.joel.issue_tracker.models.dto;
 
-import com.joel.issue_tracker.models.Ticket;
+//import com.joel.issue_tracker.models.Ticket;
 import lombok.Data;
 
 import java.util.List;
@@ -13,5 +13,5 @@ public class UserProfileDTO {
     private String email;
     private String role;
     private int noOfTickets;
-    private List<Ticket> tickets;
+    private List<TicketViewDTO> tickets;
 }

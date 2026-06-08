@@ -25,19 +25,38 @@ public class TicketServiceImpl implements TicketService {
     private ModelMapper modelMapper;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private ComponentRepo componentRepo;
 
     @Override
     public String createTicket(TicketDTO ticketDTO) {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Authentication auth =
+                SecurityContextHolder.getContext().getAuthentication();
+
         assert auth != null;
-        Object principal = auth.getPrincipal();
-        UserPrincipal userPrincipal = (UserPrincipal) principal;
+        UserPrincipal userPrincipal =
+                (UserPrincipal) auth.getPrincipal();
+
         assert userPrincipal != null;
-        User user = userRepo.findByEmail(userPrincipal.getUsername());
-        System.out.println("Test from TicketServiceImpl : "+userPrincipal.getUsername()+"  "+user);
-        Ticket ticket = modelMapper.map(ticketDTO, Ticket.class);
+        User user =
+                userRepo.findByEmail(userPrincipal.getUsername());
+
+        ComponentModel component =
+                componentRepo.findByComponentId(ticketDTO.getComponentId())
+                        .orElseThrow(() ->
+                                new RuntimeException("Component not found"));
+
+//        Ticket ticket =
+//                modelMapper.map(ticketDTO, Ticket.class);
+        Ticket ticket = new Ticket();
+
+        ticket.setTitle(ticketDTO.getTitle());
+        ticket.setDescription(ticketDTO.getDescription());
+        ticket.setPriority(ticketDTO.getPriority());
+
         ticket.setCreatedBy(user);
+        ticket.setComponent(component);
         ticket.setStatus(TicketStatus.NEW);
         ticket.setAssignedTo(null);
         ticketRepo.save(ticket);
@@ -50,6 +69,7 @@ public class TicketServiceImpl implements TicketService {
         List<TicketViewDTO> ticketViewDTOs = new ArrayList<>();
         for (Ticket ticket : tickets) {
             TicketViewDTO ticketViewDTO = new TicketViewDTO();
+            TicketComponentDTO ticketComponentDTO = new TicketComponentDTO();
             ticketViewDTO.setId(ticket.getId());
             ticketViewDTO.setTitle(ticket.getTitle());
             ticketViewDTO.setDescription(ticket.getDescription());
@@ -58,6 +78,11 @@ public class TicketServiceImpl implements TicketService {
             ticketViewDTO.setPriority(ticket.getPriority());
             ticketViewDTO.setCreatedBy(ticket.getCreatedBy().getUsername());
             ticketViewDTO.setAssignedTo(ticket.getAssignedTo()!=null ? ticket.getAssignedTo().getUsername():"Unassigned");
+            ticketComponentDTO.setComponentId(ticket.getComponent().getComponentId());
+            ticketComponentDTO.setComponentName(ticket.getComponent().getComponentName());
+            ticketComponentDTO.setId(ticket.getComponent().getId());
+            ticketViewDTO.setTicketComponent(ticketComponentDTO);
+            ticketViewDTO.setUpdatedAt(ticket.getUpdatedAt());
             ticketViewDTOs.add(ticketViewDTO);
         }
         return ticketViewDTOs;

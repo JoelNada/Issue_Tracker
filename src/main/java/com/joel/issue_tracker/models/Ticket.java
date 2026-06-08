@@ -51,4 +51,8 @@ public class Ticket {
     @JsonManagedReference
     private List<TicketComment> ticketComments = new ArrayList<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "component_id")
+    private ComponentModel component;
+
 }

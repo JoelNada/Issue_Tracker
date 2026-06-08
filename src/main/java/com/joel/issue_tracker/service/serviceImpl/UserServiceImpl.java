@@ -70,9 +70,34 @@ public class UserServiceImpl implements UserService {
         assert userPrincipal != null;
         System.out.println("Test from UserServiceImpl : "+userPrincipal.getUsername());
         User currentUser = userRepo.findByEmail(userPrincipal.getUsername());
-        UserProfileDTO userProfileDTO = modelMapper.map(currentUser, UserProfileDTO.class);
+        UserProfileDTO userProfileDTO = new UserProfileDTO();
+        userProfileDTO.setId(currentUser.getId());
+        userProfileDTO.setUsername(currentUser.getUsername());
+        userProfileDTO.setEmail(currentUser.getEmail());
+        userProfileDTO.setUserID(currentUser.getUserId());
+        List<TicketViewDTO> ticketViewDTOs = new ArrayList<>();
+        currentUser.getCreatedTickets().forEach(ticket -> {
+            TicketViewDTO ticketViewDTO = new TicketViewDTO();
+            TicketComponentDTO ticketComponentDTO = new TicketComponentDTO();
+            ticketViewDTO.setId(ticket.getId());
+            ticketViewDTO.setTitle(ticket.getTitle());
+            ticketViewDTO.setDescription(ticket.getDescription());
+            ticketViewDTO.setCreatedAt(ticket.getCreatedAt());
+            ticketViewDTO.setStatus(ticket.getStatus());
+            ticketViewDTO.setPriority(ticket.getPriority());
+            ticketViewDTO.setCreatedBy(ticket.getCreatedBy().getUsername());
+            ticketViewDTO.setAssignedTo(ticket.getAssignedTo()!=null ? ticket.getAssignedTo().getUsername():"Unassigned");
+            ticketComponentDTO.setComponentId(ticket.getComponent().getComponentId());
+            ticketComponentDTO.setComponentName(ticket.getComponent().getComponentName());
+            ticketComponentDTO.setId(ticket.getComponent().getId());
+            ticketViewDTO.setTicketComponent(ticketComponentDTO);
+            ticketViewDTO.setUpdatedAt(ticket.getUpdatedAt());
+            ticketViewDTOs.add(ticketViewDTO);
+        });
+
         userProfileDTO.setNoOfTickets(currentUser.getCreatedTickets().size());
         userProfileDTO.setRole(currentUser.getRoles().iterator().next().getRoleName());
+        userProfileDTO.setTickets(ticketViewDTOs);
         return userProfileDTO;
     }
 

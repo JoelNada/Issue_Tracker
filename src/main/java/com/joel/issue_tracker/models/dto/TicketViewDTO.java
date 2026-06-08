@@ -2,7 +2,10 @@ package com.joel.issue_tracker.models.dto;
 
 import com.joel.issue_tracker.helper.TicketPriority;
 import com.joel.issue_tracker.helper.TicketStatus;
+import jakarta.persistence.Embeddable;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -18,4 +21,7 @@ public class TicketViewDTO {
     private TicketStatus status;
     private TicketPriority priority;
     private LocalDateTime updatedAt;
+    private TicketComponentDTO ticketComponent;
 }
+
+
